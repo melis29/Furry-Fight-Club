@@ -1,5 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from "fastify";
 import { Match } from "./db/entities/Match.js";
+import { Message } from "./db/entities/Message.js";
 import {User} from "./db/entities/User.js";
 import {ICreateUsersBody} from "./types.js";
 
@@ -129,6 +130,27 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 			return reply.status(500).send(err);
 		}
 
+	});
+
+	app.post<{Body: { sender_email: string, receiver_email: string }}>("/message", async (req, reply) =>{
+		const {sender_email, receiver_email } = req.body;
+
+		try{
+			const receiver = await req.em.findOne(User, { email: receiver_email});
+
+			const sender = await req.em.findOne(User, { email: sender_email});
+
+			const newMessage = await req.em.create(Message, {
+				sender,
+				receiver
+			});
+
+			await req.em.flush();
+			return reply.send(newMessage);
+		} catch (err) {
+			console.error(err);
+			return reply.status(500).send(err);
+		}
 	});
 }
 
