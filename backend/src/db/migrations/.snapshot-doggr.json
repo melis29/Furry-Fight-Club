@@ -90,8 +90,17 @@
     },
     {
       "columns": {
-        "sender_id": {
-          "name": "sender_id",
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "sender_email_id": {
+          "name": "sender_email_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -99,8 +108,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "receiver_id": {
-          "name": "receiver_id",
+        "receiver_email_id": {
+          "name": "receiver_email_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -124,7 +133,7 @@
         {
           "keyName": "message_pkey",
           "columnNames": [
-            "sender_id"
+            "id"
           ],
           "composite": false,
           "primary": true,
@@ -133,23 +142,22 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "message_sender_id_foreign": {
-          "constraintName": "message_sender_id_foreign",
+        "message_sender_email_id_foreign": {
+          "constraintName": "message_sender_email_id_foreign",
           "columnNames": [
-            "sender_id"
+            "sender_email_id"
           ],
           "localTableName": "public.message",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.users",
-          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "message_receiver_id_foreign": {
-          "constraintName": "message_receiver_id_foreign",
+        "message_receiver_email_id_foreign": {
+          "constraintName": "message_receiver_email_id_foreign",
           "columnNames": [
-            "receiver_id"
+            "receiver_email_id"
           ],
           "localTableName": "public.message",
           "referencedColumnNames": [

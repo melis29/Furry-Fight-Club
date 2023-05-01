@@ -1,15 +1,18 @@
-import { Entity, Property, ManyToOne } from "@mikro-orm/core";
+import {Entity, Property, ManyToOne, PrimaryKey} from "@mikro-orm/core";
 import type { Rel } from "@mikro-orm/core";
 import { User } from "./User.js";
 
 
 @Entity()
 export class Message{
-	@ManyToOne({primary: true})
-	sender!: Rel<User>;
+	@PrimaryKey()
+	id!: number;
 
-	@ManyToOne({nullable: false})
-	receiver!: Rel<User>;
+	@ManyToOne()
+	sender_email!: Rel<User>;
+
+	@ManyToOne()
+	receiver_email!: Rel<User>;
 
 	@Property()
 	message!: string;

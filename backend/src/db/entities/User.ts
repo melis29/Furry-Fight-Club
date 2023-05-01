@@ -33,14 +33,14 @@ export class User extends BaseEntity {
 
 	@OneToMany(
 		() => Message,
-		message => message.sender,
+		message => message.sender_email,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
 	sender_message!: Collection<Message>;
 
 	@OneToMany(
 		() => Message,
-		message => message.receiver,
+		message => message.receiver_email,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
 	receiver_message!: Collection<Message>;

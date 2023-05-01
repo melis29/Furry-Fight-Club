@@ -132,17 +132,18 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 
 	});
 
-	app.post<{Body: { sender_email: string, receiver_email: string }}>("/message", async (req, reply) =>{
-		const {sender_email, receiver_email } = req.body;
+	app.post<{Body: { sender: string, receiver: string, message:string }}>("/messages", async (req, reply) =>{
+		const { sender, receiver, message } = req.body;
 
 		try{
-			const receiver = await req.em.findOne(User, { email: receiver_email});
+			const receiver_email = await req.em.findOne(User, { email: receiver });
 
-			const sender = await req.em.findOne(User, { email: sender_email});
+			const sender_email = await req.em.findOne(User, { email: sender });
 
 			const newMessage = await req.em.create(Message, {
-				sender,
-				receiver
+				sender_email,
+				receiver_email,
+				message
 			});
 
 			await req.em.flush();
@@ -152,6 +153,40 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 			return reply.status(500).send(err);
 		}
 	});
+
+	app.search("/messages", async (req, reply) => {
+		const { receiver } = req.body;
+
+		const email = receiver;
+
+		try {
+			const theUser = await req.em.findOne(User, { email });
+			const receiver_email = theUser.id;
+			const messageList = await req.em.find(Message, {receiver_email});
+			reply.send(messageList);
+		} catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	});
+
+	app.search("/messages/sent", async (req, reply) => {
+		const { sender } = req.body;
+
+		const email = sender;
+
+		try {
+			const theUser = await req.em.findOne(User, { email });
+			const sender_email = theUser.id;
+			const messageList = await req.em.find(Message, {sender_email});
+			reply.send(messageList);
+		} catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	});
+
+
 }
 
 export default DoggrRoutes;
