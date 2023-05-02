@@ -3,6 +3,9 @@ import { Match } from "./db/entities/Match.js";
 import { Message } from "./db/entities/Message.js";
 import {User} from "./db/entities/User.js";
 import {ICreateUsersBody} from "./types.js";
+import fs from 'fs';
+import path from 'path';
+import {fileURLToPath} from "url";
 
 async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	if (!app) {
@@ -90,12 +93,16 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	});
 	
 	// DELETE
-	app.delete<{ Body: {email}}>("/users", async(req, reply) => {
-		const { email } = req.body;
-		
+	app.delete<{ Body: {email, password}}>("/users", async(req, reply) => {
+		const { email, password } = req.body;
+
+		if(password !== process.env.PASSWORD){
+			return reply.status(401).send("Unauthorized!");
+		}
+
 		try {
 			const theUser = await req.em.findOne(User, { email });
-			
+
 			await req.em.remove(theUser).flush();
 			console.log(theUser);
 			reply.send(theUser);
@@ -135,22 +142,38 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	app.post<{Body: { sender: string, receiver: string, message:string }}>("/messages", async (req, reply) =>{
 		const { sender, receiver, message } = req.body;
 
-		try{
-			const receiver_email = await req.em.findOne(User, { email: receiver });
+		const __filename = fileURLToPath(import.meta.url);
+		const __dirname = path.dirname(__filename);
+		const badWordPath = path.join(__dirname, "badwords.txt");
+		const data = fs.readFileSync(badWordPath).toString();
+		const badWordList = data.split(/\r?\n/);
+		const words = message.split(' ');
+		const badWordFlag = words.some(word => badWordList.includes(word));
 
-			const sender_email = await req.em.findOne(User, { email: sender });
+		if (badWordFlag) {
+			console.error("You tried to send a naughty message");
+			return reply.status(500)
+				.send( "You tried to send a naughty message");
+		} else {
+			try {
+				const receiver_email = await req.em.findOne(User, {email: receiver});
 
-			const newMessage = await req.em.create(Message, {
-				sender_email,
-				receiver_email,
-				message
-			});
+				const sender_email = await req.em.findOne(User, {email: sender});
 
-			await req.em.flush();
-			return reply.send(newMessage);
-		} catch (err) {
-			console.error(err);
-			return reply.status(500).send(err);
+				const newMessage = await req.em.create(Message, {
+					sender_email,
+					receiver_email,
+					message
+				});
+
+				await req.em.flush();
+				return reply.send(newMessage);
+			} catch (err) {
+				console.error(err);
+				return reply.status(500)
+					.send(err);
+			}
+			
 		}
 	});
 
@@ -186,6 +209,72 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 		}
 	});
 
+	app.put<{Body: { messageId: number, message: string }}>("/messages", async(req, reply) => {
+		const { messageId, message} = req.body;
+
+		const id = messageId;
+
+		try {
+
+			const theMessage = await req.em.findOne(Message, {id});
+			theMessage.message = message;
+
+			// Reminder -- this is how we persist our JS object changes to the database itself
+			await req.em.flush();
+			reply.send(theMessage);
+		} catch(err){
+			console.error(err);
+			console.error(id);
+			reply.status(500).send(err);
+		}
+
+	});
+
+	app.delete<{ Body: {messageId, password}}>("/messages", async(req, reply) => {
+		const { messageId, password } = req.body;
+		const id = messageId;
+
+		if(password !== process.env.PASSWORD){
+			return reply.status(401).send("Unauthorized!");
+		}
+		else {
+
+			try {
+				const theMessage = await req.em.findOne(Message, {id});
+
+				await req.em.remove(theMessage)
+					.flush();
+				reply.send(theMessage);
+			} catch (err) {
+				console.error(err);
+				reply.status(500)
+					.send(err);
+			}
+		}
+	});
+
+	app.delete<{ Body: {sender, password}}>("/messages/all", async(req, reply) => {
+		const { sender, password } = req.body;
+
+		const email = sender;
+
+		if(password !== process.env.PASSWORD){
+			return reply.status(401).send("Unauthorized!");
+		}
+
+
+		try {
+			const theUser = await req.em.findOne(User, { email });
+			const sender_email = theUser.id;
+			const theSender = await req.em.find(Message, { sender_email });
+
+			await req.em.remove(theSender).flush();
+			reply.send(theSender);
+		} catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	});
 
 }
 
