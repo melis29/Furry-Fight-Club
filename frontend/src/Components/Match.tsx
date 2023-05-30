@@ -6,6 +6,7 @@ import { getNextProfileFromServer } from "@/Services/HttpClient.tsx";
 import { MatchService } from "@/Services/MatchService.tsx";
 import { PassService } from "@/Services/PassService.tsx";
 import { useContext, useEffect, useState } from "react";
+import { MessageButton } from "@/Components/MessageButton.tsx";
 
 export const Match = () => {
 	const [currentProfile, setCurrentProfile] = useState<ProfileType>();
@@ -51,6 +52,7 @@ export const Match = () => {
 	return (
 		<>
 			{profile}
+			<MessageButton{...currentProfile}></MessageButton>
 		</>
 	);
 };
