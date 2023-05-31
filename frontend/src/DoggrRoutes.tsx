@@ -40,7 +40,7 @@ export function DoggrRouter() {
 				<Route path="/create" element={<CreateProfile/>}/>
 				<Route path="/login" element={<Login />} />
 				<Route path="/logout" element={<Logout />} />
-				<Route path="/message" Component={Message} />
+				<Route path="/message" Component={auth?.token != null? Message : Login} />
 			</Routes>
 		</div>
 	);
