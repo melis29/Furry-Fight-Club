@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap');
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-heading {
+    font-family: 'Sedgwick Ave Display', cursive;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    margin-bottom: 10px;
+    color: red;
+}
+
+.form-field {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

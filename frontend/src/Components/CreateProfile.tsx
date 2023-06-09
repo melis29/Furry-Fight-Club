@@ -38,6 +38,7 @@ export const CreateProfile = () => {
 			}
 		};
 
+
 		httpClient.post("/users", formData, config)
 			.then( (response) => {
 				console.log("Got response from uploading file", response.status);
@@ -46,6 +47,10 @@ export const CreateProfile = () => {
 				} else {
 					setSubmitted(SubmissionStatus.SubmitFailed);
 				}
+			})
+			.catch((error) => {
+				console.error("Error occurred during file upload:", error);
+				setSubmitted(SubmissionStatus.SubmitFailed);
 			});
 	};
 
