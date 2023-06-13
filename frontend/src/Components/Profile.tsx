@@ -3,24 +3,34 @@ import { useEffect } from "react";
 import "@css/DoggrStyles.css";
 
 export type ProfileProps = ProfileType & {
-	onLikeButtonClick: () => void;
-	onPassButtonClick: () => void;
+	opponent: boolean;
 };
 
 export function Profile(props: ProfileProps) {
-	const { imgUri, name, petType, onLikeButtonClick, onPassButtonClick } = props;
+	const { imgUri, name, petType, opponent } = props;
 
 	const minioUrl = "http://localhost:9000/doggr/" + imgUri;
 
+	const onTauntButtonClick = () =>{
+		alert("Your fur is gross!");
+	};
+
+	const onEncourageButtonClick = () =>{
+		alert("We can do this!");
+	};
+
 	return (
-		<div className={"flex flex-col items-center rounded-box bg-slate-700 w-4/5 mx-auto"}>
-			<img className="rounded" src={minioUrl} alt="Profile of pet" style={{ width: '128px', height: '128px' }} />
+		<div className={"flex flex-col items-center rounded-box bg-slate-700 w-1/3 mx-auto my-5 "}>
+		<img className="rounded my-5" src={minioUrl} alt="Image of animal" style={{ width: '128px', height: '128px' }} />
 			<h2 className={"text-4xl text-blue-600"}>{name}</h2>
-			<div className={"text-2xl text-blue-300"}>Pet Type: {petType}</div>
-			<div className={"space-x-8 my-1"}>
-				<button className="btn btn-circle" onClick={onPassButtonClick}>Pass</button>
-				<button className="btn btn-circle" onClick={onLikeButtonClick}>Like</button>
-			</div>
+			{ opponent? <div className={"text-2xl text-blue-300"}>Opponent {petType}</div> : <div className={"text-2xl text-blue-300"}>Challenger {petType}</div> }
+			{ opponent ? <div className={"space-x-18 my-5"}>
+				<button className="btn btn-circle" style={{ whiteSpace: "nowrap", width: "100px", height: "100px", backgroundColor: "red" }} onClick={onTauntButtonClick}>Taunt</button>
+			</div> : <div className={"space-x-18 my-5"}>
+				<button className="btn btn-circle" style={{ whiteSpace: "nowrap", width: "100px", height: "100px", backgroundColor: "red" }} onClick={onEncourageButtonClick}>
+					Encourage
+				</button>
+			</div> }
 		</div>
 	);
 }

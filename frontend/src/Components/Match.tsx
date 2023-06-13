@@ -3,10 +3,10 @@ import { Profile } from "@/Components/Profile.tsx";
 import { ProfileType } from "@/DoggrTypes.ts";
 import { useAuth } from "@/Services/Auth.tsx";
 import { getNextProfileFromServer } from "@/Services/HttpClient.tsx";
-import { MatchService } from "@/Services/MatchService.tsx";
-import { PassService } from "@/Services/PassService.tsx";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MessageButton } from "@/Components/MessageButton.tsx";
+
+import './Match.css';
 
 export const Match = () => {
 	const [currentProfile, setCurrentProfile] = useState<ProfileType>();
@@ -23,36 +23,28 @@ export const Match = () => {
 		fetchProfile();
 	}, []);
 
-	const onLikeButtonClick = () => {
-		MatchService.send(auth.userId, currentProfile.id)
-			.then(fetchProfile)
-			.catch(err => {
-				console.error(err);
-				fetchProfile();
-			});
-	};
-
-	const onPassButtonClick = () => {
-		PassService.send(auth.userId, currentProfile.id)
-			.then(fetchProfile)
-			.catch(err => {
-				console.error(err);
-				fetchProfile();
-			});
-	};
-
-	const profile = (
+	const opponent = (
 		<Profile
 			{...currentProfile}
-			onLikeButtonClick={onLikeButtonClick}
-			onPassButtonClick={onPassButtonClick}
+			opponent={true}
+		/>
+	);
+
+	const user = (
+		<Profile
+			{...currentProfile}
+			opponent={false}
 		/>
 	);
 
 	return (
-		<>
-			{profile}
-			<MessageButton{...currentProfile}></MessageButton>
-		</>
+		<div className="battle-container">
+			<div className="battle-items">
+				{opponent}
+				<h2>VS</h2>
+				{user}
+				{/*<MessageButton {...currentProfile} />*/}
+			</div>
+		</div>
 	);
 };

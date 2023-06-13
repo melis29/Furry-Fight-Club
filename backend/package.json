@@ -19,13 +19,9 @@
     "migration:freshSeed": "pnpm mikro-orm-esm migration:fresh --seed",
     "schema:update": "pnpm mikro-orm-esm schema:update --run --fk-checks",
     "schema:drop": "pnpm mikro-orm-esm schema:drop --run",
-    "schema:fresh": "pnpm mikro-orm-esm schema:fresh",
-    "schema:freshSeed": "pnpm mikro-orm-esm schema:fresh --seed",
     "migration:create": "pnpm mikro-orm-esm migration:create --name ",
     "migration:up": "pnpm mikro-orm-esm migration:up",
     "migration:down": "pnpm mikro-orm-esm migration:down",
-    "migration:fresh": "pnpm mikro-orm-esm migration:fresh",
-    "migration:freshSeed": "pnpm mikro-orm-esm migration:fresh --seed",
     "seed:create": "pnpm mikro-orm-esm seeder:create ",
     "seed:run": "pnpm mikro-orm-esm seeder:run",
     "startProd": "pnpm migration:fresh && pnpm start"
@@ -56,6 +52,7 @@
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
     "fastify-plugin": "^4.5.0",
+    "firebase": "^9.22.1",
     "jsonwebtoken": "^9.0.0",
     "mikro-orm-soft-delete": "^0.1.0",
     "minio": "^7.1.0"

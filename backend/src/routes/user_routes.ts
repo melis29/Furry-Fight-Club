@@ -37,7 +37,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 			);
 			const { name, email, password, petType } = body;
 			await UploadFileToMinio(data);
-
+			console.log(name + email+password+petType+data.filename);
 			const hashedPw = await bcrypt.hash(password, 10);
 			const newUser = await req.em.create(User, {
 				name,
