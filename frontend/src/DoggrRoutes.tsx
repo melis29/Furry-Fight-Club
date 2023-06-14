@@ -7,6 +7,8 @@ import { Message } from "@/Components/Message.tsx";
 import { ProtectedRoute } from "@/Components/ProtectedRoute.tsx";
 import { useAuth } from "@/Services/Auth.tsx";
 import { Link, Route, Routes } from "react-router-dom";
+import { Winner } from "@/Components/Winner.tsx";
+import { Loser } from "@/Components/Loser.tsx";
 import "@css/DoggrStyles.css";
 
 export function DoggrRouter() {
@@ -20,7 +22,7 @@ export function DoggrRouter() {
 
 						<ul className={"menu menu-horizontal"}>
 							<li><Link to="/">Home</Link></li>
-							<li><Link to="/match"> Match</Link></li>
+							<li><Link to="/match"> Battle</Link></li>
 							{auth?.token != null ? (
 								<li><Link to="/logout">Logout</Link></li>
 							) : (
@@ -41,6 +43,8 @@ export function DoggrRouter() {
 				<Route path="/login" element={<Login />} />
 				<Route path="/logout" element={<Logout />} />
 				<Route path="/message" Component={auth?.token != null? Message : Login} />
+				<Route path="/winner" element={<Winner />} />
+				<Route path="/loser" element={<Loser />} />
 			</Routes>
 		</div>
 	);

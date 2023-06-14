@@ -1,5 +1,6 @@
 import { httpClient } from "@/Services/HttpClient.tsx";
 import { useState } from "react";
+import {useNavigate} from "react-router-dom";
 
 export enum SubmissionStatus {
 	NotSubmitted,
@@ -15,6 +16,7 @@ export const CreateProfile = () => {
 	const [password, setPassword] = useState("");
 	const [petType, setPetType] = useState("");
 	const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
+	const navigation = useNavigate();
 
 	const onFileChange = ev => {
 		setSelectedFile(ev.target.files[0]);
@@ -44,6 +46,8 @@ export const CreateProfile = () => {
 				console.log("Got response from uploading file", response.status);
 				if (response.status === 200) {
 					setSubmitted(SubmissionStatus.SubmitSucceeded);
+					alert("Account created successfully! Now please login.");
+					navigation('/login');
 				} else {
 					setSubmitted(SubmissionStatus.SubmitFailed);
 				}

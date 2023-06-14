@@ -1,16 +1,22 @@
 import './HomePage.css';
+import {useNavigate} from "react-router-dom";
 
-const handleBattleNow = () => {
-	// Add your logic for the battle functionality
-	console.log('Battle Now clicked!');
-};
+
 
 export const Home = () => {
+	const navigation = useNavigate();
+
+	const handleBattleNow = () => {
+		// Add your logic for the battle functionality
+		navigation('/Match');
+	};
+
 	return (
 		<div className="HomePage">
 			<Title />
 			<Subtitle />
 			<Button onClick={handleBattleNow} />
+			<Pictures/>
 		</div>
 	);
 };
@@ -32,6 +38,16 @@ export function Button({ onClick }) {
 		<button className="Button" onClick={onClick}>
 			Battle Now
 		</button>
+	);
+}
+
+export function Pictures(){
+	return (
+		<div className="image-container">
+			<img src="/nora.png" alt="Nora" />
+			<img src="/both.png" alt="Both" />
+			<img src="/yelena.png" alt="Yelena" />
+		</div>
 	);
 }
 

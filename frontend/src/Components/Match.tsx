@@ -6,7 +6,9 @@ import { getNextProfileFromServer } from "@/Services/HttpClient.tsx";
 import { useEffect, useState } from "react";
 import { BattleUpload } from "@/Components/BattleUpload.tsx";
 
+
 import './Match.css';
+import { useNavigate } from 'react-router-dom';
 
 export const Match = () => {
 	const [currentProfile, setCurrentProfile] = useState<ProfileType>();
@@ -14,6 +16,8 @@ export const Match = () => {
 	const [selectedFile, setSelectedFile] = useState();
 
 	const auth = useAuth();
+
+	const navigation = useNavigate();
 
 	const fetchProfile = () => {
 		getNextProfileFromServer()
@@ -60,7 +64,14 @@ export const Match = () => {
 	};
 
 	const result = () => {
-		console.log("result");
+		const randomNum = Math.floor(Math.random() * 100);
+		if(randomNum % 2 == 0)
+		{
+			navigation('/winner');
+		}
+		else{
+			navigation('/loser');
+		}
 	};
 
 	return (

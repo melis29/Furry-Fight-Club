@@ -23,3 +23,14 @@
     color: #333;
     cursor: pointer;
 }
+
+.image-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.image-container img {
+    width: 200px;
+    height: 200px;
+    padding: 50px 10px; /* Adjust the padding value as needed */
+}
