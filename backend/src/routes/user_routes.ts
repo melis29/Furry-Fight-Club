@@ -56,6 +56,23 @@ export function UserRoutesInit(app: FastifyInstance) {
 		}
 	});
 
+	// app.post<{ Body: {fileName: string} }>("/users/pictures", async (req, reply) => {
+	//
+	// 	try {
+	// 		const data = await req.file();
+	//
+	//
+	// 		const body = Object.fromEntries(
+	// 			// @ts-ignore
+	// 			Object.keys(data.fields).map((key) => [key, data.fields[key].value])
+	// 		);
+	//
+	// 		await UploadFileToMinio(data);
+	// 	} catch (err) {
+	// 		return reply.status(500).send({message: err.message});
+	// 	}
+	// });
+
 	//READ
 	app.search("/users", async (req, reply) => {
 		const { id } = req.body;
