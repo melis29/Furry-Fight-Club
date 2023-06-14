@@ -7,7 +7,7 @@ import { FastifySearchHttpMethodPlugin } from "./plugins/http_search.js";
 import { FastifyMikroOrmPlugin } from "./plugins/mikro.js";
 import DoggrRoutes from "./routes/routes.js";
 import config from "./db/mikro-orm.config.js";
-import fastifyFirebase from "./firebase.js";
+// import {FastifyFireBaseAuth} from "./plugins/firebase";
 
 const envToLogger = {
 	development: {
@@ -52,6 +52,6 @@ await app.register(FastifyBadWordsPlugin);
 await app.register(AuthPlugin);
 await app.register(DoggrRoutes, {});
 // Register the Firebase plugin
-await app.register(fastifyFirebase);
+// await app.register(FastifyFireBaseAuth);
 
 export default app;
