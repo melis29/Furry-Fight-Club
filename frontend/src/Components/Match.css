@@ -1,12 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Silkscreen&display=swap');
-.battle-container {
-    display: flex;
-    justify-content: center; /* Center the items horizontally */
-    font-family: 'Silkscreen', cursive;
-}
+
 
 .battle-items {
     width: 50%;
     display: flex;
     align-items: center; /* Center the items vertically */
+}
+
+.battle-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center the items horizontally */
+    font-family: 'Silkscreen', cursive;
+}
+
+.btn-large {
+    font-size: 36px;
+    height: fit-content;
+    padding: 20px 40px;
+    display: block; /* Makes the button a block-level element */
+    margin-top: 1em; /* Adds top margin to create space and push the button to a new line */
+    background-color: red;
 }

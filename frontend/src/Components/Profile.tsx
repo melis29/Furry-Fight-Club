@@ -1,5 +1,4 @@
 import { ProfileType } from "@/DoggrTypes.ts";
-import { useEffect } from "react";
 import "@css/DoggrStyles.css";
 
 export type ProfileProps = ProfileType & {
