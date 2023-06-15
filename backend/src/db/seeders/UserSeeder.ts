@@ -15,7 +15,7 @@ export class UserSeeder extends Seeder {
 			email: "test@gmail.com",
 			password: hashedPw,
 			petType: "Cat",
-			imgUri: "dog.jpg",
+			imgUri: "1.jpg",
 			role: UserRole.ADMIN,
 			firebase_uid:"mIAX7oHCPXbhQuB6tdV3m6lh3iw1",
 		});
@@ -25,7 +25,7 @@ export class UserSeeder extends Seeder {
 			email: "test2@gmail.com",
 			password: hashedPw,
 			petType: "Cat",
-			imgUri: "dog.jpg",
+			imgUri: "2.jpg",
 			role: UserRole.USER,
 			firebase_uid: "1fRyxL5QN6QHvJKktF2fsuZ8RhL2 ",
 		});
@@ -35,7 +35,7 @@ export class UserSeeder extends Seeder {
 			email: "test3@gmail.com",
 			password: hashedPw,
 			petType: "Cat",
-			imgUri: "dog.jpg",
+			imgUri: "3.jpg",
 			role: UserRole.USER,
 			firebase_uid: "45FGIqgIkSgpK0em2UdXDj38dIi1",
 		});
@@ -45,7 +45,7 @@ export class UserSeeder extends Seeder {
 			email: "test4@gmail.com",
 			password: hashedPw,
 			petType: "Cat",
-			imgUri: "dog.jpg",
+			imgUri: "4.jpg",
 			role: UserRole.USER,
 			firebase_uid: "Ibk1YwXBSrRiiHEvbD9JXJTT7wD3",
 		});
