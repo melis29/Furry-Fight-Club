@@ -11,39 +11,43 @@ export class UserSeeder extends Seeder {
 
 		// https://mikro-orm.io/docs/seeding#shared-context
 		context.user1 = em.create(User, {
-			name: "Spot",
-			email: "email@email.com",
+			name: "Kitty",
+			email: "test@gmail.com",
 			password: hashedPw,
-			petType: "Dog",
+			petType: "Cat",
 			imgUri: "dog.jpg",
 			role: UserRole.ADMIN,
+			firebase_uid:"mIAX7oHCPXbhQuB6tdV3m6lh3iw1",
 		});
 
 		context.user2 = em.create(User, {
 			name: "Dogbert",
-			email: "email2@email.com",
-			password: hashedPw,
-			petType: "Dog",
-			imgUri: "dog.jpg",
-			role: UserRole.USER,
-		});
-
-		context.user3 = em.create(User, {
-			name: "Doglord",
-			email: "email3@email.com",
-			password: hashedPw,
-			petType: "Dog",
-			imgUri: "dog.jpg",
-			role: UserRole.USER,
-		});
-
-		context.user4 = em.create(User, {
-			name: "NotaDog",
-			email: "email4@email.com",
+			email: "test2@gmail.com",
 			password: hashedPw,
 			petType: "Cat",
 			imgUri: "dog.jpg",
 			role: UserRole.USER,
+			firebase_uid: "1fRyxL5QN6QHvJKktF2fsuZ8RhL2 ",
+		});
+
+		context.user3 = em.create(User, {
+			name: "Doglord",
+			email: "test3@gmail.com",
+			password: hashedPw,
+			petType: "Cat",
+			imgUri: "dog.jpg",
+			role: UserRole.USER,
+			firebase_uid: "45FGIqgIkSgpK0em2UdXDj38dIi1",
+		});
+
+		context.user4 = em.create(User, {
+			name: "NotaDog",
+			email: "test4@gmail.com",
+			password: hashedPw,
+			petType: "Cat",
+			imgUri: "dog.jpg",
+			role: UserRole.USER,
+			firebase_uid: "Ibk1YwXBSrRiiHEvbD9JXJTT7wD3",
 		});
 	}
 }

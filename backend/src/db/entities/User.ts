@@ -24,6 +24,9 @@ export class User extends DoggrBaseEntity {
 	@Property()
 	name!: string
 
+	@Property({ name: 'firebase_uid' })
+	firebase_uid!: string;
+
 	@Property()
 	password!: string;
 

@@ -4,6 +4,7 @@ import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
 import { User, UserRole } from "../db/entities/User.js";
 import { UploadFileToMinio } from "../plugins/minio.js";
 import { ICreateUsersBody, IUpdateUsersBody } from "../types.js";
+import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 export function UserRoutesInit(app: FastifyInstance) {
 	// Route that returns all users, soft deleted and not
@@ -37,7 +38,14 @@ export function UserRoutesInit(app: FastifyInstance) {
 			);
 			const { name, email, password, petType } = body;
 			await UploadFileToMinio(data);
-			console.log(name + email+password+petType+data.filename);
+
+			const authen = getAuth(app.firebase);
+			const response = await createUserWithEmailAndPassword(authen, email, password);
+			const user = response.user;
+
+			const firebaseUID = user.uid;
+
+
 			const hashedPw = await bcrypt.hash(password, 10);
 			const newUser = await req.em.create(User, {
 				name,
@@ -46,6 +54,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 				petType,
 				imgUri: data.filename,
 				// We'll only create Admins manually!
+				firebase_uid: firebaseUID,
 				role: UserRole.USER
 			});
 
@@ -56,22 +65,38 @@ export function UserRoutesInit(app: FastifyInstance) {
 		}
 	});
 
-	// app.post<{ Body: {fileName: string} }>("/users/pictures", async (req, reply) => {
+	// app.post<{ Body: { email: string, password: string } }>("/signIn", async (req, reply) => {
 	//
 	// 	try {
-	// 		const data = await req.file();
+	// 		const {email, password} = req.body;
+	// 		const authen = getAuth(app.firebase);
+	// 		await signInWithEmailAndPassword(authen, email, password).then((JSONdata)=>{
+	// 			const data = JSON.parse(JSON.stringify(JSONdata));
+	// 			console.log("Logged in");
 	//
-	//
-	// 		const body = Object.fromEntries(
-	// 			// @ts-ignore
-	// 			Object.keys(data.fields).map((key) => [key, data.fields[key].value])
-	// 		);
-	//
-	// 		await UploadFileToMinio(data);
+	// 			return reply.send(data.user.stsTokenManager.accessToken);
+	// 		})
+	// 			.catch((error: any) => {
+	// 			console.log(error);
+	// 		});
 	// 	} catch (err) {
 	// 		return reply.status(500).send({message: err.message});
 	// 	}
 	// });
+
+	app.post<{ Body: { picture: string }}>("/users/picture", async (req, reply) => {
+		const data = await req.file();
+		try {
+			await UploadFileToMinio(data);
+
+			await req.em.flush();
+
+			reply.send("Maybe worked");
+		} catch (error) {
+			console.error('Error occurred during picture update:', error);
+			reply.status(500).send('An error occurred during picture update.');
+		}
+	});
 
 	//READ
 	app.search("/users", async (req, reply) => {
