@@ -2,20 +2,20 @@
 import { Profile } from "@/Components/Profile.tsx";
 import { ProfileType } from "@/DoggrTypes.ts";
 import { useAuth } from "@/Services/Auth.tsx";
-import { getNextProfileFromServer } from "@/Services/HttpClient.tsx";
+import {getNextProfileFromServer, httpClient} from "@/Services/HttpClient.tsx";
 import { useEffect, useState } from "react";
-import { BattleUpload } from "@/Components/BattleUpload.tsx";
-
+import { UploadFileToMinio } from "../../../backend/src/plugins/minio.js";
 
 import './Match.css';
 import { useNavigate } from 'react-router-dom';
 
 export const Match = () => {
 	const [currentProfile, setCurrentProfile] = useState<ProfileType>();
+	const [myName, setMyName] = useState("");
 	const [uploadNeeded, setUploadNeeded] = useState(true);
 	const [selectedFile, setSelectedFile] = useState();
+	const [img, setImg] = useState("cat");
 
-	const auth = useAuth();
 
 	const navigation = useNavigate();
 
@@ -37,29 +37,62 @@ export const Match = () => {
 	);
 
 	const user = (
+		// @ts-ignore
 		<Profile
-			{...currentProfile}
 			opponent={false}
+			name={myName}
+			// @ts-ignore
+			imgUri={img.name}
+			petType="cat"
 		/>
 	);
 
-	const onFileChange = ev => {
-		setSelectedFile(ev.target.files[0]);
+
+	const onFileChange = async (ev) => {
+		const selectedFile = ev.target.files[0];
+		setImg(selectedFile);
+	};
+
+	const onSubmit = () =>{
+		const formData = new FormData();
+		formData.append('file', img);
+		const config = {
+			headers: {
+				'content-type': 'multipart/form-data',
+			}
+		};
+		httpClient.post("/users/picture", formData, config)
+			.then( (response) => {
+				console.log("Got response from uploading file", response.status);
+			})
+			.catch((error) => {
+				console.error("Error occurred during file upload:", error);
+			});
 		setUploadNeeded(false);
 	};
 
 	const toUpload = () =>{
 		return (<div className={"flex flex-col items-center rounded-box bg-slate-700 w-1/3 mx-auto my-5 "}>
+			<label htmlFor="catname" className="text-blue-300 mb-2 my-2 mx-auto">Enter in cat name:</label>
+			<input
+				placeholder="Name..."
+				type="text"
+				id="name"
+				required
+				onChange={e => setMyName(e.target.value)}
+				name="name"
+				className="input input-bordered"
+			/>
+
 			<label htmlFor="profilepic" className="text-blue-300 mb-2 my-2 mx-auto">Upload your cat picture:</label>
 			<input
 				type={"file"}
-				className={"input input-bordered max-w-full"}
 				id={"profilepic"}
 				name="profilepic"
 				accept={"image/png, image/jpeg"}
 				onChange={onFileChange}
 			/>
-			<button onClick={onFileChange} className={"my-2"}>Upload</button>
+			<button onClick={onSubmit} className={"my-2"}>Upload</button>
 		</div>);
 	};
 

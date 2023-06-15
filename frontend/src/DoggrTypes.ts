@@ -5,9 +5,9 @@ export type State = {
 };
 
 export type ProfileType = {
-	imgUri: string;
-	thumbUri: string;
+	imgUri?: string;
+	thumbUri?: string;
 	name: string;
 	petType: string;
-	id: number;
+	id?: number;
 };
