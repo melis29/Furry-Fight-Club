@@ -73,7 +73,7 @@ export const Match = () => {
 
 	const toUpload = () =>{
 		return (<div className={"flex flex-col items-center rounded-box bg-slate-700 w-1/3 mx-auto my-5 "}>
-			<label htmlFor="catname" className="text-blue-300 mb-2 my-2 mx-auto">Enter in cat name:</label>
+			<label htmlFor="catname" className="text-green-300 mb-2 my-2 mx-auto">Enter in cat name:</label>
 			<input
 				placeholder="Name..."
 				type="text"
@@ -82,17 +82,19 @@ export const Match = () => {
 				onChange={e => setMyName(e.target.value)}
 				name="name"
 				className="input input-bordered"
+				style={{ width: "70%", height: "25%"}}
 			/>
 
-			<label htmlFor="profilepic" className="text-blue-300 mb-2 my-2 mx-auto">Upload your cat picture:</label>
+			<label htmlFor="profilepic" className="text-green-300 mb-2 my-2 mx-auto">Upload your cat picture:</label>
 			<input
 				type={"file"}
 				id={"profilepic"}
 				name="profilepic"
 				accept={"image/png, image/jpeg"}
 				onChange={onFileChange}
+				style={{ width: "70%", height: "25%"}}
 			/>
-			<button onClick={onSubmit} className={"my-2"}>Upload</button>
+			<button onClick={onSubmit} className={"my-2 bg-emerald-500"} >Upload</button>
 		</div>);
 	};
 

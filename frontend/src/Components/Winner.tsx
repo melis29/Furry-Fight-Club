@@ -12,6 +12,7 @@ export const Winner = () => {
             <h3 className="Subtitle">
                 Congrats! Your cat far surpasses the other cat in cuteness!
             </h3>
+            <Pictures/>
         <Button onClick={goBattleNow} />
     </div>
 );};
@@ -21,5 +22,13 @@ export function Button({ onClick }) {
         <button className="Button" onClick={onClick}>
             Battle Again
         </button>
+    );
+}
+
+export function Pictures(){
+    return (
+        <div className="image-container">
+            <img src="/happy.png" alt="Sad Cat" />
+        </div>
     );
 }

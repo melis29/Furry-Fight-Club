@@ -16,7 +16,7 @@ export function DoggrRouter() {
 
 	return (
 		<div className={"doggrfancy"}>
-			<nav className="bg-blue-800 rounded-b shadow-lg mb-4">
+			<nav className="bg-emerald-500 rounded-b shadow-lg mb-1">
 				<div className="navbar justify-center">
 					<div className={"navbar-center lg:flex"}>
 
